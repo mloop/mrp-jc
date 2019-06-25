@@ -113,3 +113,7 @@ $$y_i \sim \textrm{Bernoulli}(p_i)$$
 $$\textrm{logit}(p_i) = C_{nxJ}X_{Jx?}\beta_{?x1},$$ where $\beta \sim MVN(0, \Sigma_\beta)$. So, we will end up with a $p_i$ for each observation with $?$ distinct values. The population $\pi$ is arrived at by the formula $$\pi = \frac{\sum_{j=1}^J N_j \pi_j}{\sum_{j=1}^J N_j}.$$
 
 **Discussion question: How do you arrive at the weighted estimates for each $\pi_j$, or a combination of some $j$ (e.g., all males)?**
+
+Using the Bayesian paradigm to fit these models just allows for additional shrinkage, and potentially much less variable estimates in cells with low sample size counts. 
+
+**Discussion question: How do you do MRP if you don't know the cell counts in the population?**
