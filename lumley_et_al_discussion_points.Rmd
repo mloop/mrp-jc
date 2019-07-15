@@ -1,0 +1,70 @@
+---
+title: "Fitting Regression Models to Survey Data - Discussion Points"
+output: pdf_document
+---
+
+### Notation
+
++ Draw a sample $S$ of $n$ units from a finite population of $N$ units. 
++ Observations $\{(y_i, x_i); i \in S \}$. 
++ Associated weights $\{w_i; i \in S \}$, 
+  + (Broadly) weights indicate number of population units represented by the $i^{th}$ sample.
+  + In some cases, $w_i=\pi_i^{-1}$, where $\pi_i$ is the probability of selecting the $i^{th}$ unit.
++ $R_i$: Indicator that unit $i$ in the population was sampled. 
++ $E_{\pi}$: expectation over finite population sampling 
++ $E_{p}$: expectation over the model 
++ $\beta_0$: true parameter value in the superpopulation model 
++ $\tilde\beta_N$: maximum quasi-likelihood estimator of $\beta_0$ that would be obtained from the full population data.
++ $\beta^*$: the limit in probability of $\tilde\beta_N$
++ $\hat\beta_n$ the maximum pseudo-likelihood estimator obtained from sample 
+
+*Question: why are $\tilde\beta_N$ and $\beta_0$ not the same?*
+
+*Question: what is the superpopulation?*
+
+### Assumptions
+
++ Sample population is a realization of the superpopulation probability model with density $f(Y|X;\beta)$
++ $g(E[Y|X = x]) = g(\mu) = x'\beta \iff \mu = g^{-1}(x'\beta)$
++ $var[Y|X = x] = \sigma^2V(\mu)$
+
+*Interesting Note: the paper claims 'when the primary interest is in the marginal regressions there does not seem to be any important loss of generality in treating the population as an i.i.d. sample'.*
+
+### Pseudo-Likelihood Estimation 
+
++ Approach underlying regression modeling in all major statistical software packages for survey analysis 
++ Solve the following estimating (score) equations:
+  + $\sum_{i=1}^NR_iw_iU_i(\beta) = \sum_{i=1}^NR_iw_ix_i\frac{1}{g'(\mu_i)V(\mu_i)}(y_i - \mu_i(\beta)) = 0$ 
+  + unbiased estimating equations for $\tilde\beta_N$ if $E_{\pi}[w_iR_i]=1$
+  + $\hat\beta_n$ asymptotically normal and consistent for $\beta_0$ when the superpopulation model is correctly specified
++ $Var(\hat\beta_n)$ is the sum of two components
+  + Finite population sampling variance of $\hat\beta_n$ around $\tilde\beta_N$ of order $n^{-1}$.
+  + Model based sampling variance of $\tilde\beta_N$ around $\beta_0$ of order $N^{-1}$.
+  + Model based sampling variance often ignored when N is much larger than n.
+  + Usual sandwich estimator: $A^{-1}BA^{-1}$
+    + $A = \sum_{i=1}^Nw_iR_i\frac{\partial U_i(\beta)}{\partial \beta}|_{\beta= \hat\beta_n}$
+    + $B = \hat var_{\pi}(\sum_{i=1}^Nw_iR_iU_i(\beta))$
++ Wald and score tests possible 
+
+### Use of weights 
+
++ Need for using weights depends on type of sampling
+  + exogenous: R is independent of Y conditional on predictor variables X
+  + endogenous: R is not conditionally independent of Y
++ If sampling is exogenous, the non-sampled fraction of the population is MAR. 
+  + Use of sampling weights may not be needed 
+  + See paper for additional details
++ For exogenous sampling, the non-sampled fraction is NMAR and the weights (apparently) should be used
+  + Not much discussion of this in the paper 
+  
+### Working Likelihood/Maximum Likelihood
+
++ In general, no straightforward likelihood function for survey data
++ Standard analytic techniques (above) use estimating equations and do not rely on likelihood based approaches
++ For hypothesis testing, still possible to construct an analogue of the likelihood ratio test based on the pseudo-likelihood 
+  + $\hat l(\beta) = \sum_{i = 1}^Nw_iR_ilog(f(y|x; \beta))$
+  + $\Lambda = 2(\hat l(\hat\beta) - \hat l(\hat\beta_0))$
++ Case-control studies are notable exceptions where full likelihood methods are still possible.   
+
+
+
